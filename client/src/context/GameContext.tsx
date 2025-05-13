@@ -43,6 +43,10 @@ interface GameContextType {
   purchaseAsset: (assetId: string) => boolean;
   sellAsset: (assetId: string) => boolean;
   
+  // Passive income actions
+  purchasePassiveIncome: (passiveIncomeId: string) => boolean;
+  upgradePassiveIncome: (passiveIncomeId: string) => boolean;
+  
   // Auth actions
   login: (username: string, password: string) => Promise<boolean>;
   register: (username: string, password: string) => Promise<boolean>;
@@ -233,8 +237,23 @@ export function GameProvider({ children }: { children: ReactNode }) {
         }
       });
       
-      // Add revenue to player cash
-      newState.player.cash += totalRevenue;
+      // Process passive income sources
+      let passiveIncomeTotal = 0;
+      newState.passiveIncomes.forEach(income => {
+        if (income.active) {
+          // Calculate income based on level
+          const incomeAmount = income.income * income.currentLevel;
+          passiveIncomeTotal += incomeAmount;
+          
+          // Handle cooldowns if applicable
+          if (income.cooldownTurns > 0) {
+            income.cooldownTurns -= 1;
+          }
+        }
+      });
+      
+      // Add business revenue and passive income to player cash
+      newState.player.cash += totalRevenue + passiveIncomeTotal;
       
       // Update market and stock prices
       updateMarket(newState);
