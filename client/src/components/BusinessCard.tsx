@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Business } from "@shared/schema";
 import { formatCurrency } from "@/lib/businessLogic";
-import { Building2, TrendingUp, Users, Star, ArrowUp } from "lucide-react";
+import { Building2, TrendingUp, Users, Star, ArrowUp, Settings } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { BusinessCustomization } from "@/components/BusinessCustomization";
 
 interface BusinessCardProps {
   business: Business;
@@ -12,6 +15,7 @@ interface BusinessCardProps {
   onUpgrade?: () => void;
   onSell?: () => void;
   onClick?: () => void;
+  onCustomize?: () => void;
 }
 
 export function BusinessCard({
@@ -20,10 +24,19 @@ export function BusinessCard({
   onPurchase,
   onUpgrade,
   onSell,
-  onClick
+  onClick,
+  onCustomize
 }: BusinessCardProps) {
+  const [customizeOpen, setCustomizeOpen] = useState(false);
+  
   const handleClick = () => {
     if (onClick) onClick();
+  };
+  
+  const handleCustomizeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCustomizeOpen(true);
+    if (onCustomize) onCustomize();
   };
 
   const renderBusinessIcon = () => {
@@ -45,6 +58,22 @@ export function BusinessCard({
         return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>;
       case 'franchise':
         return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 17a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-1a4 4 0 0 0-4 4v2a2 2 0 0 0 2 2Z"/><path d="M16 8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-1a4 4 0 0 0-4 4v2a2 2 0 0 0 2 2Z"/><path d="M4 17a2 2 0 0 0 2 2h1a4 4 0 0 0 4-4v-2a2 2 0 0 0-2-2H4Z"/><path d="M8 8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H7a4 4 0 0 0-4 4v2a2 2 0 0 0 2 2Z"/></svg>;
+      case 'socialMedia':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>;
+      case 'crypto':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.16-6.2L12.18 3.12"/><path d="M9.841 5.065c-4.925-.868-6.14 6.025-1.216 6.894m1.216-6.894 5.908 1.041m-5.908-1.04-.347-1.97m1.563 8.863c-4.924-.868-6.14 6.025-1.215 6.894m1.215-6.894 3.939.693m-5.154 6.2.347 1.97"/></svg>;
+      case 'dropshipping':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 12v4"/><path d="M12 9v.01"/></svg>;
+      case 'game':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>;
+      case 'content':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>;
+      case 'consulting':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 11h1a3 3 0 0 1 0 6h-1"/><path d="M9 12v6"/><path d="M13 12v6"/><path d="M14 7.5c-1 0-1.44.5-3 .5s-2-.5-3-.5-1.72.5-2.5.5a2.5 2.5 0 0 1 0-5c.78 0 1.72.5 2.5.5 1 0 1.44-.5 3-.5s2 .5 3 .5 1.72-.5 2.5-.5a2.5 2.5 0 0 1 0 5c-.78 0-1.72-.5-2.5-.5Z"/></svg>;
+      case 'trading':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>;
+      case 'affiliate':
+        return <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.1 11.5a5 5 0 1 0 0-7 5 5 0 0 0 0 7Z"/><path d="M9.1 14.5a5 5 0 1 0 0 7 5 5 0 0 0 0-7Z"/><path d="M14.9 11.5a5 5 0 1 0 0-7 5 5 0 0 0 0 7Z"/><path d="M14.9 14.5a5 5 0 1 0 0 7 5 5 0 0 0 0-7Z"/></svg>;
       default:
         return <Building2 className="h-5 w-5" />;
     }
@@ -163,6 +192,15 @@ export function BusinessCard({
               </Button>
             )}
             
+            <Button 
+              variant="secondary" 
+              className="flex-1" 
+              onClick={handleCustomizeClick}
+            >
+              <Settings className="h-4 w-4 mr-1" />
+              Customize
+            </Button>
+            
             {onSell && (
               <Button variant="outline" className="flex-1" onClick={onSell}>
                 Sell
@@ -171,6 +209,12 @@ export function BusinessCard({
           </>
         )}
       </CardFooter>
+      
+      <Dialog open={customizeOpen} onOpenChange={setCustomizeOpen}>
+        <DialogContent className="sm:max-w-[700px]">
+          <BusinessCustomization business={business} onClose={() => setCustomizeOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

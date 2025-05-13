@@ -12,7 +12,7 @@ import { Business } from "@shared/schema";
 import { Building, Briefcase, TrendingUp, DollarSign } from "lucide-react";
 
 export default function BusinessPage() {
-  const { gameState, purchaseBusiness, upgradeBusiness, sellBusiness } = useGameContext();
+  const { gameState, purchaseBusiness, upgradeBusiness, sellBusiness, activateQuickMoney, purchaseBusinessUpgrade, applyBusinessStrategy } = useGameContext();
   
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
   const [dialogType, setDialogType] = useState<'purchase' | 'upgrade' | 'sell' | null>(null);

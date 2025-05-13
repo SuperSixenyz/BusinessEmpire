@@ -1,10 +1,11 @@
 import express, { type Express } from "express";
-import type { Server } from "http";
+import http, { type Server } from "http";
 import { storage } from "./storage";
 import { gameStateSchema, insertGameSaveSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  const server = http.createServer(app);
   const router = express.Router();
   
   // Get all game saves for a user
@@ -136,5 +137,5 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register all routes with /api prefix
   app.use("/api", router);
   
-  return app;
+  return server;
 }
