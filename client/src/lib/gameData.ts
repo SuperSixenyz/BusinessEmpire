@@ -5,7 +5,12 @@ import {
   Stock,
   Asset,
   EconomicEvent,
-  BusinessType
+  BusinessType,
+  ResourceType,
+  CryptoAsset,
+  PassiveIncome,
+  StockBroker,
+  Resource
 } from "@shared/schema";
 
 /**
@@ -19,7 +24,18 @@ export function generateInitialGameState(playerName?: string): GameState {
       netWorth: 1000,
       businessesSold: 0,
       upgradesPurchased: 0,
-      stocksTraded: 0
+      stocksTraded: 0,
+      skills: {
+        management: 1,
+        negotiation: 1,
+        marketing: 1,
+        finance: 1,
+        technology: 1,
+        research: 1
+      },
+      skillPoints: 0,
+      experience: 0,
+      level: 1
     },
     turn: 1,
     businesses: generateBusinesses(),
@@ -27,9 +43,18 @@ export function generateInitialGameState(playerName?: string): GameState {
     assets: generateAssets(),
     events: generateEvents(),
     activeEvents: [],
+    cryptoAssets: generateCryptoAssets(),
+    realEstateProperties: [],
+    passiveIncomes: generatePassiveIncomes(),
+    stockBrokers: generateStockBrokers(),
     marketTrend: 0.05, // Slightly positive at start
     economicHealth: 70, // Good but not perfect
-    unlockProgress: 0
+    unlockProgress: 0,
+    stockMarketFee: 0.01,
+    stockMarketOpen: true,
+    dayTradingUnlocked: false,
+    foreignCurrencyUnlocked: false,
+    realEstateUnlocked: false
   };
 }
 
