@@ -30,6 +30,9 @@ interface GameContextType {
   purchaseBusiness: (businessId: string) => boolean;
   upgradeBusiness: (businessId: string) => boolean;
   sellBusiness: (businessId: string) => boolean;
+  activateQuickMoney: (businessId: string) => boolean;
+  purchaseBusinessUpgrade: (businessId: string, upgradeId: string) => boolean;
+  applyBusinessStrategy: (businessId: string, strategyId: string) => boolean;
   
   // Stock actions
   buyStock: (stockId: string, quantity: number) => boolean;
@@ -609,6 +612,147 @@ export function GameProvider({ children }: { children: ReactNode }) {
     toast({
       title: "Asset Sold",
       description: `You sold ${asset.name} for $${asset.value.toLocaleString()}!`,
+    });
+    
+    return true;
+  };
+  
+  // New business customization methods
+  
+  // Quick Money - Activate business special ability for immediate cash
+  const activateQuickMoney = (businessId: string): boolean => {
+    if (!gameState) return false;
+    
+    const businessIndex = gameState.businesses.findIndex(b => b.id === businessId);
+    if (businessIndex === -1) return false;
+    
+    const business = gameState.businesses[businessIndex];
+    if (!business.owned || !business.quickMoneyOption) return false;
+    
+    // Check if boost is already active
+    if (business.boostActive) {
+      toast({
+        title: "Already Used",
+        description: "This special ability is on cooldown. Wait until next turn.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    // Calculate quick money amount based on business level and revenue
+    const baseAmount = business.revenue * business.level;
+    const multiplier = 2 + (Math.random() * 2); // 2x to 4x
+    const quickMoneyAmount = Math.round(baseAmount * multiplier);
+    
+    const newState = { ...gameState };
+    newState.player.cash += quickMoneyAmount;
+    newState.businesses[businessIndex].boostActive = true;
+    
+    setGameState(newState);
+    calculateNetWorth(newState);
+    
+    toast({
+      title: "Quick Money Generated!",
+      description: `${business.name} generated $${quickMoneyAmount.toLocaleString()} in quick cash!`,
+    });
+    
+    return true;
+  };
+  
+  // Purchase a specific upgrade for a business
+  const purchaseBusinessUpgrade = (businessId: string, upgradeId: string): boolean => {
+    if (!gameState) return false;
+    
+    const businessIndex = gameState.businesses.findIndex(b => b.id === businessId);
+    if (businessIndex === -1) return false;
+    
+    const business = gameState.businesses[businessIndex];
+    if (!business.owned) return false;
+    
+    const upgradeIndex = business.upgrades.findIndex(u => u.id === upgradeId);
+    if (upgradeIndex === -1) return false;
+    
+    const upgrade = business.upgrades[upgradeIndex];
+    if (upgrade.purchased || !upgrade.unlocked) return false;
+    
+    // Check if player can afford the upgrade
+    if (gameState.player.cash < upgrade.cost) {
+      toast({
+        title: "Insufficient Funds",
+        description: `You need $${upgrade.cost.toLocaleString()} to purchase this upgrade.`,
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    const newState = { ...gameState };
+    
+    // Pay for upgrade
+    newState.player.cash -= upgrade.cost;
+    
+    // Apply upgrade effects
+    newState.businesses[businessIndex].upgrades[upgradeIndex].purchased = true;
+    
+    // Apply revenue multiplier
+    if (upgrade.revenueMultiplier > 1) {
+      newState.businesses[businessIndex].revenue = 
+        Math.round(newState.businesses[businessIndex].revenue * upgrade.revenueMultiplier);
+    }
+    
+    // Apply cost reduction
+    if (upgrade.costReduction > 0) {
+      newState.businesses[businessIndex].cost = 
+        Math.round(newState.businesses[businessIndex].cost * (1 - upgrade.costReduction));
+    }
+    
+    newState.player.upgradesPurchased += 1;
+    
+    setGameState(newState);
+    calculateNetWorth(newState);
+    
+    toast({
+      title: "Upgrade Purchased",
+      description: `You purchased the ${upgrade.name} upgrade for ${business.name}!`,
+    });
+    
+    return true;
+  };
+  
+  // Apply a business strategy to change revenue/cost structure
+  const applyBusinessStrategy = (businessId: string, strategyId: string): boolean => {
+    if (!gameState) return false;
+    
+    const businessIndex = gameState.businesses.findIndex(b => b.id === businessId);
+    if (businessIndex === -1) return false;
+    
+    const business = gameState.businesses[businessIndex];
+    if (!business.owned) return false;
+    
+    // Find the strategy
+    const strategyIndex = business.strategies.findIndex(s => s.id === strategyId);
+    if (strategyIndex === -1) return false;
+    
+    const strategy = business.strategies[strategyIndex];
+    if (!strategy.unlocked) return false;
+    
+    const newState = { ...gameState };
+    
+    // Reset all strategies first
+    newState.businesses[businessIndex].strategies.forEach(s => {
+      s.active = false;
+    });
+    
+    // Activate the selected strategy
+    newState.businesses[businessIndex].strategies[strategyIndex].active = true;
+    
+    // Apply strategy effects (will take effect on next turn)
+    // We'll adjust the revenue and cost calculations in the endTurn method
+    
+    setGameState(newState);
+    
+    toast({
+      title: "Strategy Applied",
+      description: `You've applied the ${strategy.name} strategy to ${business.name}. Changes will take effect starting next turn.`,
     });
     
     return true;
