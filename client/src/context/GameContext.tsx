@@ -25,6 +25,7 @@ interface GameContextType {
   saveGame: (saveName: string) => Promise<boolean>;
   loadGame: (saveId: number) => Promise<boolean>;
   endTurn: () => void;
+  setGameState: (newState: GameState) => void; // For admin panel
   
   // Business actions
   purchaseBusiness: (businessId: string) => boolean;
