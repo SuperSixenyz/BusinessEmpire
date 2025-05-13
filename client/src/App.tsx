@@ -10,6 +10,7 @@ import Business from "@/pages/business";
 import Investments from "@/pages/investments";
 import Assets from "@/pages/assets";
 import Events from "@/pages/events";
+import AdminPage from "@/pages/admin";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/investments" component={Investments} />
       <Route path="/assets" component={Assets} />
       <Route path="/events" component={Events} />
+      <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />
     </Switch>
   );

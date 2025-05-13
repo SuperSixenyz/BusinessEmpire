@@ -865,6 +865,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       saveGame,
       loadGame,
       endTurn,
+      setGameState,
       
       // Business actions
       purchaseBusiness,

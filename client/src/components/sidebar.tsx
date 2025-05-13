@@ -18,6 +18,7 @@ import {
   DollarSign,
   User,
   Home,
+  ShieldAlert,
 } from "lucide-react";
 
 export function Sidebar() {
@@ -71,6 +72,12 @@ export function Sidebar() {
       title: "Events",
       href: "/events",
       icon: <Bell className="h-5 w-5" />,
+    },
+    {
+      title: "Admin Panel",
+      href: "/admin",
+      icon: <ShieldAlert className="h-5 w-5" />,
+      special: true // marks it as a special menu item
     },
   ];
 
@@ -126,8 +133,11 @@ export function Sidebar() {
             {navItems.map((item) => (
               <Link key={item.href} href={item.href}>
                 <Button
-                  variant={location === item.href ? "secondary" : "ghost"}
-                  className="w-full justify-start"
+                  variant={
+                    item.special ? "outline" :
+                    location === item.href ? "secondary" : "ghost"
+                  }
+                  className={`w-full justify-start ${item.special ? 'border-red-300 text-red-600 hover:text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950/50 mt-4' : ''}`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.icon}
