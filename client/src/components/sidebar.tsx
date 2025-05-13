@@ -19,6 +19,7 @@ import {
   User,
   Home,
   ShieldAlert,
+  Coins,
 } from "lucide-react";
 
 export function Sidebar() {
@@ -67,6 +68,11 @@ export function Sidebar() {
       title: "Assets",
       href: "/assets",
       icon: <Gem className="h-5 w-5" />,
+    },
+    {
+      title: "Passive Income",
+      href: "/passive-income",
+      icon: <Coins className="h-5 w-5" />,
     },
     {
       title: "Events",

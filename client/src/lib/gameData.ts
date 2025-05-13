@@ -16,7 +16,501 @@ import {
 /**
  * Generates the initial game state for a new game
  */
+/**
+ * Generates a list of resources for a restaurant business
+ */
+function generateRestaurantResources(): Resource[] {
+  return [
+    {
+      id: nanoid(),
+      name: "Chef Staff",
+      type: "STAFF",
+      description: "Hire skilled chefs to improve your restaurant's food quality.",
+      cost: 5000,
+      level: 1,
+      maxLevel: 5,
+      revenueBonus: 0.1,
+      efficiencyBonus: 0.05,
+      qualityBonus: 0.15,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "chef-hat"
+    },
+    {
+      id: nanoid(),
+      name: "Wait Staff",
+      type: "STAFF",
+      description: "Hire waiters and servers to improve customer service.",
+      cost: 2500,
+      level: 1,
+      maxLevel: 5,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.1,
+      qualityBonus: 0.05,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "user"
+    },
+    {
+      id: nanoid(),
+      name: "Quality Food Supplier",
+      type: "SUPPLIER",
+      description: "Partner with premium ingredient suppliers for better quality dishes.",
+      cost: 7500,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0,
+      qualityBonus: 0.2,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "truck"
+    },
+    {
+      id: nanoid(),
+      name: "Kitchen Equipment",
+      type: "EQUIPMENT",
+      description: "Upgrade your kitchen with modern cooking equipment.",
+      cost: 10000,
+      level: 1,
+      maxLevel: 4,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.15,
+      qualityBonus: 0.1,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "utensils"
+    },
+    {
+      id: nanoid(),
+      name: "Restaurant Location",
+      type: "LOCATION",
+      description: "Improve your restaurant's location to attract more customers.",
+      cost: 15000,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0.2,
+      efficiencyBonus: 0,
+      qualityBonus: 0.05,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "map-pin"
+    },
+    {
+      id: nanoid(),
+      name: "Marketing Campaign",
+      type: "MARKETING",
+      description: "Launch advertising campaigns to attract more customers.",
+      cost: 3000,
+      level: 1,
+      maxLevel: 5,
+      revenueBonus: 0.15,
+      efficiencyBonus: 0,
+      qualityBonus: 0,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "megaphone"
+    },
+    {
+      id: nanoid(),
+      name: "Reservation System",
+      type: "TECHNOLOGY",
+      description: "Implement a digital reservation system to manage customers efficiently.",
+      cost: 2000,
+      level: 1,
+      maxLevel: 2,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.1,
+      qualityBonus: 0.05,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "calendar"
+    },
+    {
+      id: nanoid(),
+      name: "Staff Training",
+      type: "TRAINING",
+      description: "Provide professional training to your staff for better service.",
+      cost: 4000,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.1,
+      qualityBonus: 0.1,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "graduation-cap"
+    },
+    {
+      id: nanoid(),
+      name: "Food Service License",
+      type: "LICENSE",
+      description: "Obtain proper licensing for your restaurant operation.",
+      cost: 1500,
+      level: 1,
+      maxLevel: 1,
+      revenueBonus: 0,
+      efficiencyBonus: 0,
+      qualityBonus: 0,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "file-text"
+    },
+    {
+      id: nanoid(),
+      name: "Supply Chain Management",
+      type: "LOGISTICS",
+      description: "Optimize your supply chain for cost efficiency.",
+      cost: 5000,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.15,
+      qualityBonus: 0,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "boxes"
+    }
+  ];
+}
+
+/**
+ * Generates a list of resources for a tech startup business
+ */
+function generateTechStartupResources(): Resource[] {
+  return [
+    {
+      id: nanoid(),
+      name: "Software Developers",
+      type: "STAFF",
+      description: "Hire talented developers to build your product.",
+      cost: 8000,
+      level: 1,
+      maxLevel: 5,
+      revenueBonus: 0.1,
+      efficiencyBonus: 0.1,
+      qualityBonus: 0.15,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "code"
+    },
+    {
+      id: nanoid(),
+      name: "UI/UX Designers",
+      type: "STAFF",
+      description: "Hire designers to create an appealing user interface.",
+      cost: 6000,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.05,
+      qualityBonus: 0.15,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "pen-tool"
+    },
+    {
+      id: nanoid(),
+      name: "Cloud Infrastructure",
+      type: "TECHNOLOGY",
+      description: "Set up scalable cloud servers and infrastructure.",
+      cost: 5000,
+      level: 1,
+      maxLevel: 4,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.2,
+      qualityBonus: 0.05,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "cloud"
+    },
+    {
+      id: nanoid(),
+      name: "Development Tools",
+      type: "EQUIPMENT",
+      description: "Invest in professional development tools and software.",
+      cost: 3000,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0,
+      efficiencyBonus: 0.15,
+      qualityBonus: 0.1,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "tool"
+    },
+    {
+      id: nanoid(),
+      name: "Office Space",
+      type: "LOCATION",
+      description: "Secure a modern office in a tech hub location.",
+      cost: 10000,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.1,
+      qualityBonus: 0,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "home"
+    },
+    {
+      id: nanoid(),
+      name: "Digital Marketing",
+      type: "MARKETING",
+      description: "Launch targeted online marketing campaigns.",
+      cost: 4000,
+      level: 1,
+      maxLevel: 5,
+      revenueBonus: 0.15,
+      efficiencyBonus: 0,
+      qualityBonus: 0,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "trending-up"
+    },
+    {
+      id: nanoid(),
+      name: "Software Patents",
+      type: "LICENSE",
+      description: "Secure patents for your unique technology.",
+      cost: 12000,
+      level: 1,
+      maxLevel: 2,
+      revenueBonus: 0.1,
+      efficiencyBonus: 0,
+      qualityBonus: 0.05,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "shield"
+    },
+    {
+      id: nanoid(),
+      name: "Agile Training",
+      type: "TRAINING",
+      description: "Train your team in agile development methodologies.",
+      cost: 3000,
+      level: 1,
+      maxLevel: 2,
+      revenueBonus: 0,
+      efficiencyBonus: 0.2,
+      qualityBonus: 0.05,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "refresh-cw"
+    },
+    {
+      id: nanoid(),
+      name: "R&D Department",
+      type: "RESEARCH",
+      description: "Establish a dedicated research and development team.",
+      cost: 15000,
+      level: 1,
+      maxLevel: 3,
+      revenueBonus: 0.05,
+      efficiencyBonus: 0.05,
+      qualityBonus: 0.2,
+      unlocked: true,
+      acquired: false,
+      prerequisiteUpgradeIds: [],
+      icon: "flask"
+    }
+  ];
+}
+
+/**
+ * Adds complex resources to businesses based on type
+ */
+function addComplexResourcesToBusinesses(businesses: Business[]): Business[] {
+  return businesses.map(business => {
+    // Clone the business
+    const enhancedBusiness = { ...business };
+    
+    // Add specific resources based on business type
+    if (business.type === "FOOD_TRUCK" || business.type === "RETAIL_STORE") {
+      enhancedBusiness.resources = generateRestaurantResources();
+      
+      // Add specific upgrades with prerequisites
+      enhancedBusiness.upgrades.push({
+        id: nanoid(),
+        name: "Menu Expansion",
+        description: "Add premium items to your menu for higher margins.",
+        cost: 8000,
+        revenueMultiplier: 1.3,
+        costReduction: 0,
+        unlocked: false,
+        purchased: false,
+        prerequisiteUpgradeIds: [],
+        requiredResources: ["STAFF", "SUPPLIER"]
+      });
+      
+      enhancedBusiness.upgrades.push({
+        id: nanoid(),
+        name: "Franchise Opportunity",
+        description: "Open a second location with shared resources.",
+        cost: 25000,
+        revenueMultiplier: 1.8,
+        costReduction: 0.1,
+        unlocked: false,
+        purchased: false,
+        prerequisiteUpgradeIds: [],
+        requiredResources: ["STAFF", "LOCATION", "LICENSE"]
+      });
+    }
+    
+    if (business.type === "TECH_STARTUP") {
+      enhancedBusiness.resources = generateTechStartupResources();
+      
+      // Add specific upgrades with prerequisites
+      enhancedBusiness.upgrades.push({
+        id: nanoid(),
+        name: "Venture Capital Funding",
+        description: "Secure Series A funding to accelerate growth.",
+        cost: 50000,
+        revenueMultiplier: 2.0,
+        costReduction: 0,
+        unlocked: false,
+        purchased: false,
+        prerequisiteUpgradeIds: [],
+        requiredResources: ["STAFF", "RESEARCH"]
+      });
+    }
+    
+    return enhancedBusiness;
+  });
+}
+
+/**
+ * Generates passive income sources
+ */
+function generatePassiveIncomeSources(): PassiveIncome[] {
+  return [
+    {
+      id: nanoid(),
+      name: "Dividend Portfolio",
+      type: "DIVIDEND",
+      description: "A portfolio of dividend-paying blue-chip stocks providing regular income.",
+      income: 50,
+      initialCost: 2000,
+      active: false,
+      cooldownTurns: 0,
+      maxLevel: 5,
+      currentLevel: 1,
+      upgradeMultiplier: 1.4,
+      upgradeCost: 1000
+    },
+    {
+      id: nanoid(),
+      name: "High-Yield Savings",
+      type: "INTEREST",
+      description: "A high-yield savings account that generates interest each turn.",
+      income: 20,
+      initialCost: 1000,
+      active: false,
+      cooldownTurns: 0,
+      maxLevel: 5,
+      currentLevel: 1,
+      upgradeMultiplier: 1.3,
+      upgradeCost: 500
+    },
+    {
+      id: nanoid(),
+      name: "Online Course",
+      type: "ROYALTY",
+      description: "Create and sell an online course that generates ongoing royalties.",
+      income: 100,
+      initialCost: 5000,
+      active: false,
+      cooldownTurns: 0,
+      maxLevel: 3,
+      currentLevel: 1,
+      upgradeMultiplier: 1.7,
+      upgradeCost: 2500
+    },
+    {
+      id: nanoid(),
+      name: "Affiliate Marketing",
+      type: "AFFILIATE",
+      description: "Earn commissions by promoting products through affiliate links.",
+      income: 75,
+      initialCost: 1500,
+      active: false,
+      cooldownTurns: 0,
+      maxLevel: 4,
+      currentLevel: 1,
+      upgradeMultiplier: 1.5,
+      upgradeCost: 1200
+    },
+    {
+      id: nanoid(),
+      name: "Software Subscription",
+      type: "SUBSCRIPTION",
+      description: "Develop a SaaS product with recurring monthly subscribers.",
+      income: 200,
+      initialCost: 8000,
+      active: false,
+      cooldownTurns: 0,
+      maxLevel: 5,
+      currentLevel: 1,
+      upgradeMultiplier: 1.8,
+      upgradeCost: 4000
+    },
+    {
+      id: nanoid(),
+      name: "Rental Property",
+      type: "RENTAL",
+      description: "Invest in a property that generates rental income each turn.",
+      income: 250,
+      initialCost: 15000,
+      active: false,
+      cooldownTurns: 0,
+      maxLevel: 3,
+      currentLevel: 1,
+      upgradeMultiplier: 1.6,
+      upgradeCost: 7500
+    },
+    {
+      id: nanoid(),
+      name: "YouTube Channel",
+      type: "AD_REVENUE",
+      description: "Create content that generates ad revenue from views.",
+      income: 150,
+      initialCost: 3000,
+      active: false,
+      cooldownTurns: 0,
+      maxLevel: 5,
+      currentLevel: 1,
+      upgradeMultiplier: 1.6,
+      upgradeCost: 2000
+    }
+  ];
+}
+
 export function generateInitialGameState(playerName?: string): GameState {
+  // Generate base businesses
+  const baseBusinesses = generateBusinesses();
+  
+  // Add complex resources and upgrade paths to the businesses
+  const enhancedBusinesses = addComplexResourcesToBusinesses(baseBusinesses);
+  
   return {
     player: {
       name: playerName,
@@ -38,15 +532,15 @@ export function generateInitialGameState(playerName?: string): GameState {
       level: 1
     },
     turn: 1,
-    businesses: generateBusinesses(),
+    businesses: enhancedBusinesses,
     stocks: generateStocks(),
     assets: generateAssets(),
     events: generateEvents(),
     activeEvents: [],
-    cryptoAssets: generateCryptoAssets(),
+    cryptoAssets: [],
     realEstateProperties: [],
-    passiveIncomes: generatePassiveIncomes(),
-    stockBrokers: generateStockBrokers(),
+    passiveIncomes: generatePassiveIncomeSources(),
+    stockBrokers: [],
     marketTrend: 0.05, // Slightly positive at start
     economicHealth: 70, // Good but not perfect
     unlockProgress: 0,

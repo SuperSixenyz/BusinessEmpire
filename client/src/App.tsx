@@ -11,6 +11,7 @@ import Investments from "@/pages/investments";
 import Assets from "@/pages/assets";
 import Events from "@/pages/events";
 import AdminPage from "@/pages/admin";
+import PassiveIncomePage from "@/pages/passive-income";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/investments" component={Investments} />
       <Route path="/assets" component={Assets} />
       <Route path="/events" component={Events} />
+      <Route path="/passive-income" component={PassiveIncomePage} />
       <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />
     </Switch>
