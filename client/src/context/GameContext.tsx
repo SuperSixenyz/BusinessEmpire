@@ -206,15 +206,29 @@ export function GameProvider({ children }: { children: ReactNode }) {
       // Update turn counter
       newState.turn += 1;
       
-      // Process business revenue
+      // Process business revenue with strategies and upgrades applied
       let totalRevenue = 0;
       newState.businesses.forEach(business => {
         if (business.owned) {
-          const businessRevenue = business.revenue * business.level;
+          // Get the active strategy if any
+          const activeStrategy = business.strategies.find(s => s.active);
+          
+          // Calculate base revenue with level multiplier
+          let businessRevenue = business.revenue * business.level;
+          
+          // Apply strategy multipliers if active
+          if (activeStrategy) {
+            businessRevenue = Math.round(businessRevenue * activeStrategy.revenueMultiplier);
+          }
+          
+          // Add revenue to total
           totalRevenue += businessRevenue;
           
           // Update business cash
           business.cash += businessRevenue;
+          
+          // Reset any quick money boosts
+          business.boostActive = false;
         }
       });
       
@@ -357,7 +371,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
           title: "Economic Event",
           description: selectedEvent.title,
           variant: selectedEvent.type === "POSITIVE" ? "default" : 
-                   selectedEvent.type === "NEGATIVE" ? "destructive" : "secondary",
+                   selectedEvent.type === "NEGATIVE" ? "destructive" : "default",
         });
       }
     }
@@ -855,6 +869,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       purchaseBusiness,
       upgradeBusiness,
       sellBusiness,
+      activateQuickMoney,
+      purchaseBusinessUpgrade,
+      applyBusinessStrategy,
       
       // Stock actions
       buyStock,

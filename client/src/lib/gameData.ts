@@ -38,7 +38,7 @@ export function generateInitialGameState(playerName?: string): GameState {
  */
 function generateBusinesses(): Business[] {
   // Create standard upgrade options
-  const createUpgrades = (businessType: string, baseUpgradePrice: number) => {
+  const createUpgrades = (businessType: BusinessType, baseUpgradePrice: number) => {
     return [
       {
         id: nanoid(),
@@ -77,7 +77,7 @@ function generateBusinesses(): Business[] {
   };
 
   // Create business strategies
-  const createStrategies = (businessType: string) => {
+  const createStrategies = (businessType: BusinessType) => {
     return [
       {
         id: nanoid(),
@@ -488,8 +488,8 @@ function generateBusinesses(): Business[] {
     }
   ];
   
-  // Combine all businesses
-  const businesses: Business[] = [...originalBusinesses, ...quickMoneyBusinesses];
+  // Cast array to Business[] to ensure type safety
+  const businesses: Business[] = [...originalBusinesses, ...quickMoneyBusinesses] as Business[];
   
   return businesses;
 }
