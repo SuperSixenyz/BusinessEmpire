@@ -39,7 +39,15 @@ export const businessTypeSchema = z.enum([
   "RETAIL_STORE",
   "TECH_STARTUP",
   "REAL_ESTATE",
-  "FRANCHISE"
+  "FRANCHISE",
+  "SOCIAL_MEDIA",
+  "CRYPTO_MINING",
+  "DROPSHIPPING",
+  "MOBILE_GAME",
+  "CONTENT_CREATION",
+  "CONSULTING",
+  "DAY_TRADING",
+  "AFFILIATE_MARKETING"
 ]);
 
 export const stockSchema = z.object({
@@ -54,6 +62,29 @@ export const stockSchema = z.object({
   purchasePrice: z.number().optional(),
 });
 
+export const upgradeSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  cost: z.number(),
+  revenueMultiplier: z.number(),
+  costReduction: z.number().default(0),
+  unlocked: z.boolean().default(true),
+  purchased: z.boolean().default(false),
+  icon: z.string().optional()
+});
+
+export const businessStrategySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  revenueMultiplier: z.number(),
+  costMultiplier: z.number(),
+  riskLevel: z.number().min(1).max(10),
+  unlocked: z.boolean().default(true),
+  active: z.boolean().default(false)
+});
+
 export const businessSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -63,13 +94,21 @@ export const businessSchema = z.object({
   cost: z.number(),
   cash: z.number(),
   employees: z.number().default(0),
-  upgrades: z.array(z.string()).default([]),
+  upgrades: z.array(upgradeSchema).default([]),
+  strategies: z.array(businessStrategySchema).default([]),
   purchasePrice: z.number(),
   upgradePrice: z.number(),
   unlocked: z.boolean().default(false),
   owned: z.boolean().default(false),
   description: z.string(),
   icon: z.string(),
+  autoSell: z.boolean().default(false),
+  boostActive: z.boolean().default(false),
+  specialAbility: z.string().optional(),
+  quickMoneyOption: z.boolean().default(false),
+  managementLevel: z.number().refine(val => val >= 1 && val <= 5, {
+    message: "Management level must be between 1 and 5"
+  }).default(1)
 });
 
 export const assetSchema = z.object({
@@ -126,6 +165,8 @@ export type GameSave = typeof gameSaves.$inferSelect;
 
 export type BusinessType = z.infer<typeof businessTypeSchema>;
 export type Stock = z.infer<typeof stockSchema>;
+export type Upgrade = z.infer<typeof upgradeSchema>;
+export type BusinessStrategy = z.infer<typeof businessStrategySchema>;
 export type Business = z.infer<typeof businessSchema>;
 export type Asset = z.infer<typeof assetSchema>;
 export type EconomicEvent = z.infer<typeof economicEventSchema>;

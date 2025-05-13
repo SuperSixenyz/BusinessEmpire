@@ -37,7 +37,83 @@ export function generateInitialGameState(playerName?: string): GameState {
  * Generates a list of businesses with increasing complexity and cost
  */
 function generateBusinesses(): Business[] {
-  const businesses: Business[] = [
+  // Create standard upgrade options
+  const createUpgrades = (businessType: string, baseUpgradePrice: number) => {
+    return [
+      {
+        id: nanoid(),
+        name: "Efficiency Optimization",
+        description: "Streamline operations to increase revenue by 15%.",
+        cost: baseUpgradePrice * 1.2,
+        revenueMultiplier: 1.15,
+        costReduction: 0,
+        unlocked: true,
+        purchased: false,
+        icon: "chart-up"
+      },
+      {
+        id: nanoid(),
+        name: "Cost Reduction",
+        description: "Reduce operational costs by 10%.",
+        cost: baseUpgradePrice * 1.5,
+        revenueMultiplier: 1.0,
+        costReduction: 0.1,
+        unlocked: true,
+        purchased: false,
+        icon: "chart-down"
+      },
+      {
+        id: nanoid(),
+        name: "Premium Offerings",
+        description: "Introduce premium options to increase revenue by 25%.",
+        cost: baseUpgradePrice * 2,
+        revenueMultiplier: 1.25,
+        costReduction: 0,
+        unlocked: true,
+        purchased: false,
+        icon: "star"
+      }
+    ];
+  };
+
+  // Create business strategies
+  const createStrategies = (businessType: string) => {
+    return [
+      {
+        id: nanoid(),
+        name: "Aggressive Growth",
+        description: "Focus on rapid expansion with higher revenue but increased costs.",
+        revenueMultiplier: 1.4,
+        costMultiplier: 1.2,
+        riskLevel: 7,
+        unlocked: true,
+        active: false
+      },
+      {
+        id: nanoid(),
+        name: "Balanced Approach",
+        description: "Maintain a balance between growth and stability.",
+        revenueMultiplier: 1.2,
+        costMultiplier: 1.1,
+        riskLevel: 4,
+        unlocked: true,
+        active: false
+      },
+      {
+        id: nanoid(),
+        name: "Conservative Management",
+        description: "Focus on stability and cost reduction with slower growth.",
+        revenueMultiplier: 1.1,
+        costMultiplier: 0.9,
+        riskLevel: 2,
+        unlocked: true,
+        active: false
+      }
+    ];
+  };
+
+  // Original businesses with enhanced features
+  const originalBusinesses = [
     {
       id: nanoid(),
       name: "Lemonade Stand",
@@ -47,13 +123,19 @@ function generateBusinesses(): Business[] {
       cost: 50,
       cash: 0,
       employees: 0,
-      upgrades: [],
+      upgrades: createUpgrades("LEMONADE_STAND", 200),
+      strategies: createStrategies("LEMONADE_STAND"),
       purchasePrice: 500,
       upgradePrice: 200,
       unlocked: true,
       owned: false,
       description: "A simple roadside lemonade stand. Low investment, modest returns.",
-      icon: "lemonade"
+      icon: "lemonade",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Quick Sales: Generate a small immediate cash boost once per day",
+      quickMoneyOption: true,
+      managementLevel: 1
     },
     {
       id: nanoid(),
@@ -64,13 +146,19 @@ function generateBusinesses(): Business[] {
       cost: 75,
       cash: 0,
       employees: 0,
-      upgrades: [],
+      upgrades: createUpgrades("FREELANCE_GIG", 300),
+      strategies: createStrategies("FREELANCE_GIG"),
       purchasePrice: 800,
       upgradePrice: 300,
       unlocked: true,
       owned: false,
       description: "Offer your skills as a freelancer. Low overhead with decent income.",
-      icon: "freelance"
+      icon: "freelance",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Rush Job: Take on an urgent project for double pay but increased stress",
+      quickMoneyOption: true,
+      managementLevel: 1
     },
     {
       id: nanoid(),
@@ -81,13 +169,19 @@ function generateBusinesses(): Business[] {
       cost: 100,
       cash: 0,
       employees: 1,
-      upgrades: [],
+      upgrades: createUpgrades("ONLINE_SHOP", 500),
+      strategies: createStrategies("ONLINE_SHOP"),
       purchasePrice: 1500,
       upgradePrice: 500,
       unlocked: false,
       owned: false,
       description: "Sell products online with global reach. Good growth potential.",
-      icon: "shop"
+      icon: "shop",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Flash Sale: Run a promotional sale to quickly generate cash",
+      quickMoneyOption: true,
+      managementLevel: 1
     },
     {
       id: nanoid(),
@@ -98,13 +192,19 @@ function generateBusinesses(): Business[] {
       cost: 150,
       cash: 0,
       employees: 2,
-      upgrades: [],
+      upgrades: createUpgrades("FOOD_TRUCK", 1000),
+      strategies: createStrategies("FOOD_TRUCK"),
       purchasePrice: 5000,
       upgradePrice: 1000,
       unlocked: false,
       owned: false,
       description: "Mobile food business serving tasty treats. Popular in urban areas.",
-      icon: "foodtruck"
+      icon: "foodtruck",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Special Event Catering: Cater a special event for a large one-time payment",
+      quickMoneyOption: true,
+      managementLevel: 1
     },
     {
       id: nanoid(),
@@ -115,13 +215,19 @@ function generateBusinesses(): Business[] {
       cost: 250,
       cash: 0,
       employees: 5,
-      upgrades: [],
+      upgrades: createUpgrades("RETAIL_STORE", 3000),
+      strategies: createStrategies("RETAIL_STORE"),
       purchasePrice: 15000,
       upgradePrice: 3000,
       unlocked: false,
       owned: false,
       description: "Physical store selling products. Established business model.",
-      icon: "retail"
+      icon: "retail",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Inventory Clearance: Sell excess inventory at a discount for quick cash",
+      quickMoneyOption: true,
+      managementLevel: 1
     },
     {
       id: nanoid(),
@@ -132,13 +238,19 @@ function generateBusinesses(): Business[] {
       cost: 600,
       cash: 0,
       employees: 10,
-      upgrades: [],
+      upgrades: createUpgrades("TECH_STARTUP", 10000),
+      strategies: createStrategies("TECH_STARTUP"),
       purchasePrice: 50000,
       upgradePrice: 10000,
       unlocked: false,
       owned: false,
       description: "Innovative tech company with high risk and high reward potential.",
-      icon: "tech"
+      icon: "tech",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Venture Funding: Secure a round of funding for immediate cash injection",
+      quickMoneyOption: true,
+      managementLevel: 1
     },
     {
       id: nanoid(),
@@ -149,13 +261,19 @@ function generateBusinesses(): Business[] {
       cost: 1000,
       cash: 0,
       employees: 15,
-      upgrades: [],
+      upgrades: createUpgrades("REAL_ESTATE", 20000),
+      strategies: createStrategies("REAL_ESTATE"),
       purchasePrice: 100000,
       upgradePrice: 20000,
       unlocked: false,
       owned: false,
       description: "Buy, sell, and rent properties. Stable income with growth potential.",
-      icon: "realestate"
+      icon: "realestate",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Luxury Sale: Broker a high-end property deal for a large commission",
+      quickMoneyOption: true,
+      managementLevel: 1
     },
     {
       id: nanoid(),
@@ -166,15 +284,212 @@ function generateBusinesses(): Business[] {
       cost: 2500,
       cash: 0,
       employees: 50,
-      upgrades: [],
+      upgrades: createUpgrades("FRANCHISE", 50000),
+      strategies: createStrategies("FRANCHISE"),
       purchasePrice: 250000,
       upgradePrice: 50000,
       unlocked: false,
       owned: false,
       description: "Expand your restaurant brand across multiple locations. High overhead but substantial returns.",
-      icon: "franchise"
+      icon: "franchise",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Celebrity Partnership: Partner with a celebrity for a marketing boost",
+      quickMoneyOption: false,
+      managementLevel: 1
     }
   ];
+
+  // New quick money-making businesses
+  const quickMoneyBusinesses = [
+    {
+      id: nanoid(),
+      name: "Social Media Influencer",
+      type: "SOCIAL_MEDIA",
+      level: 1,
+      revenue: 180,
+      cost: 70,
+      cash: 0,
+      employees: 0,
+      upgrades: createUpgrades("SOCIAL_MEDIA", 350),
+      strategies: createStrategies("SOCIAL_MEDIA"),
+      purchasePrice: 1000,
+      upgradePrice: 350,
+      unlocked: true,
+      owned: false,
+      description: "Build a following and monetize your content. Low startup costs with viral potential.",
+      icon: "socialMedia",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Sponsored Post: Create sponsored content for immediate payment",
+      quickMoneyOption: true,
+      managementLevel: 1
+    },
+    {
+      id: nanoid(),
+      name: "Crypto Mining Operation",
+      type: "CRYPTO_MINING",
+      level: 1,
+      revenue: 250,
+      cost: 150,
+      cash: 0,
+      employees: 1,
+      upgrades: createUpgrades("CRYPTO_MINING", 800),
+      strategies: createStrategies("CRYPTO_MINING"),
+      purchasePrice: 2000,
+      upgradePrice: 800,
+      unlocked: false,
+      owned: false,
+      description: "Mine cryptocurrency with specialized hardware. Volatile but potentially lucrative.",
+      icon: "crypto",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Market Timing: Sell mined coins during a price spike",
+      quickMoneyOption: true,
+      managementLevel: 1
+    },
+    {
+      id: nanoid(),
+      name: "Dropshipping Business",
+      type: "DROPSHIPPING",
+      level: 1,
+      revenue: 220,
+      cost: 110,
+      cash: 0,
+      employees: 1,
+      upgrades: createUpgrades("DROPSHIPPING", 600),
+      strategies: createStrategies("DROPSHIPPING"),
+      purchasePrice: 1800,
+      upgradePrice: 600,
+      unlocked: false,
+      owned: false,
+      description: "Sell products online without holding inventory. Low overhead with good margins.",
+      icon: "dropshipping",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Trending Product: Identify and sell a viral product for quick profits",
+      quickMoneyOption: true,
+      managementLevel: 1
+    },
+    {
+      id: nanoid(),
+      name: "Mobile Game Studio",
+      type: "MOBILE_GAME",
+      level: 1,
+      revenue: 350,
+      cost: 200,
+      cash: 0,
+      employees: 3,
+      upgrades: createUpgrades("MOBILE_GAME", 1200),
+      strategies: createStrategies("MOBILE_GAME"),
+      purchasePrice: 7000,
+      upgradePrice: 1200,
+      unlocked: false,
+      owned: false,
+      description: "Develop and monetize mobile games. High potential returns with the right hit.",
+      icon: "game",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "In-App Purchase Promotion: Run a special offer for a quick revenue boost",
+      quickMoneyOption: true,
+      managementLevel: 1
+    },
+    {
+      id: nanoid(),
+      name: "Content Creation Studio",
+      type: "CONTENT_CREATION",
+      level: 1,
+      revenue: 300,
+      cost: 150,
+      cash: 0,
+      employees: 2,
+      upgrades: createUpgrades("CONTENT_CREATION", 1000),
+      strategies: createStrategies("CONTENT_CREATION"),
+      purchasePrice: 6000,
+      upgradePrice: 1000,
+      unlocked: false,
+      owned: false,
+      description: "Create and monetize digital content across platforms. Scalable with audience growth.",
+      icon: "content",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Viral Content: Create trending content for rapid monetization",
+      quickMoneyOption: true,
+      managementLevel: 1
+    },
+    {
+      id: nanoid(),
+      name: "Business Consulting",
+      type: "CONSULTING",
+      level: 1,
+      revenue: 400,
+      cost: 100,
+      cash: 0,
+      employees: 1,
+      upgrades: createUpgrades("CONSULTING", 1500),
+      strategies: createStrategies("CONSULTING"),
+      purchasePrice: 8000,
+      upgradePrice: 1500,
+      unlocked: false,
+      owned: false,
+      description: "Provide expert business advice to clients. High margins with professional expertise.",
+      icon: "consulting",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Emergency Consultation: Provide urgent business advice at premium rates",
+      quickMoneyOption: true,
+      managementLevel: 1
+    },
+    {
+      id: nanoid(),
+      name: "Day Trading Desk",
+      type: "DAY_TRADING",
+      level: 1,
+      revenue: 500,
+      cost: 300,
+      cash: 0,
+      employees: 1,
+      upgrades: createUpgrades("DAY_TRADING", 2000),
+      strategies: createStrategies("DAY_TRADING"),
+      purchasePrice: 10000,
+      upgradePrice: 2000,
+      unlocked: false,
+      owned: false,
+      description: "Trade financial markets for short-term profits. High risk with potential for significant gains.",
+      icon: "trading",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Market Arbitrage: Exploit temporary market inefficiencies for quick profits",
+      quickMoneyOption: true,
+      managementLevel: 1
+    },
+    {
+      id: nanoid(),
+      name: "Affiliate Marketing Agency",
+      type: "AFFILIATE_MARKETING",
+      level: 1,
+      revenue: 250,
+      cost: 125,
+      cash: 0,
+      employees: 2,
+      upgrades: createUpgrades("AFFILIATE_MARKETING", 900),
+      strategies: createStrategies("AFFILIATE_MARKETING"),
+      purchasePrice: 4000,
+      upgradePrice: 900,
+      unlocked: false,
+      owned: false,
+      description: "Earn commissions by promoting other companies' products. Performance-based revenue model.",
+      icon: "affiliate",
+      autoSell: false,
+      boostActive: false,
+      specialAbility: "Promotional Campaign: Run a high-conversion campaign for quick commission earnings",
+      quickMoneyOption: true,
+      managementLevel: 1
+    }
+  ];
+  
+  // Combine all businesses
+  const businesses: Business[] = [...originalBusinesses, ...quickMoneyBusinesses];
   
   return businesses;
 }
